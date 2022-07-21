@@ -1,0 +1,65 @@
+Bot connected successfully!
+Bot connected successfully!
+Bot connected successfully!
+Bot connected successfully!
+Bot connected successfully!
+Bot connected successfully!
+Bot connected successfully!
+Bot connected successfully!
+Bot connected successfully!
+Bot connected successfully!
+Bot connected successfully!
+Bot connected successfully!
+Bot connected successfully!
+Bot connected successfully!
+Bot connected successfully!
+Bot connected successfully!
+Bot connected successfully!
+Bot connected successfully!
+Bot connected successfully!
+Bot connected successfully!
+test
+Bot connected successfully!
+Bot connected successfully!
+Bot connected successfully!
+400 Bad Request (error code: 50006): Cannot send an empty message
+Bot connected successfully!
+Bot connected successfully!
+400 Bad Request (error code: 50006): Cannot send an empty message
+Bot connected successfully!
+Bot connected successfully!
+Bot connected successfully!
+Bot connected successfully!
+Bot connected successfully!
+Bot connected successfully!
+Bot connected successfully!
+Bot connected successfully!
+Bot connected successfully!
+Categories.__init__() missing 1 required positional argument: 'message'
+Bot connected successfully!
+400 Bad Request (error code: 50006): Cannot send an empty message
+'NoneType' object has no attribute 'send'
+400 Bad Request (error code: 50006): Cannot send an empty message
+400 Bad Request (error code: 50006): Cannot send an empty message
+Categories.__init__() missing 1 required positional argument: 'message'
+Categories.__init__() missing 1 required positional argument: 'message'
+Categories.__init__() missing 1 required positional argument: 'message'
+400 Bad Request (error code: 50006): Cannot send an empty message
+400 Bad Request (error code: 50006): Cannot send an empty message
+Bot connected successfully!
+Bot connected successfully!
+Bot connected successfully!
+Bot connected successfully!
+Bot connected successfully!
+Bot connected successfully!
+Bot connected successfully!
+Bot connected successfully!
+Bot connected successfully!
+Bot connected successfully!
+Bot connected successfully!
+Bot connected successfully!
+Bot connected successfully!
+Bot connected successfully!
+Bot connected successfully!
+'NoneType' object has no attribute 'send'
+Bot connected successfully!
