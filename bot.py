@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+from discord.ext import tasks
 from typing import List
 
 import models
@@ -11,8 +12,6 @@ from datetime import datetime
 #import vk.dav
 
 config = database.Config.get()
-
-
 
 #######
 # BOT #
@@ -29,12 +28,23 @@ def bot_log(msg):
         datetime_ = str(datetime.now())
         file.write(f'[{datetime_}]\t{msg}\n')
 
+@tasks.loop(minutes=30)
+async def checkInactiveOrders():
+    for id, customer_channel_id in database.Orders.get_all_inactive():
+        await database.Orders.delete(id)
+        try:
+            channel = await bot.fetch_channel(customer_channel_id)
+            await channel.delete()
+        except Exception as e:
+            bot_log(e)
+
 @bot.event
 async def on_ready():
     bot_log('Bot connected successfully!')
     channel = await bot.fetch_channel(991404882307317860)
     await channel.purge()
     await channel.send(messages.to_create_order(), view=CreateOrder(timeout=None))
+    checkInactiveOrders.start()
 
 
 
@@ -158,10 +168,10 @@ class ChooseCategory(discord.ui.View):
         for category in database.Categories.get_all():
             self.add_item(CategoryButton(category, order_id))
 
-        @discord.ui.button(label=messages.cancel_order(), style=discord.ButtonStyle.red)
-        async def cancel_order(self, callback: discord.interactions.Interaction, button: discord.ui.Button):
-            await callback.channel.delete()
-            await database.Users.update_context(callback.user.id, '0')
+    @discord.ui.button(label=messages.cancel_order(), style=discord.ButtonStyle.red)
+    async def cancel_order(self, callback: discord.interactions.Interaction, button: discord.ui.Button):
+        await callback.channel.delete()
+        await database.Users.update_context(callback.user.id, '0')
 
 
 

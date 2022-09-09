@@ -18,12 +18,6 @@ back = lambda: database.Messages.get_text('back')
 
 choose_game = lambda: database.Messages.get_text('choose_game')
 
-def choose_moviemaker(game_id: int):
-    message = database.Games.get_message(game_id)
-    if message is None:
-        return database.Messages.get_text('choose_moviemaker')
-    return message
-
 other = lambda: database.Messages.get_text('other')
 
 enter_game = lambda: database.Messages.get_text('enter_game')

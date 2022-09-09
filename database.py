@@ -1,7 +1,9 @@
+from asyncio import new_event_loop
 from sqlite3 import connect, PARSE_DECLTYPES, PARSE_COLNAMES
-from typing import Iterable, List
+from typing import Iterable, List, Tuple
 import models
 from datetime import datetime
+from datetime import timedelta
 
 con = connect('database.db', detect_types=PARSE_DECLTYPES | PARSE_COLNAMES)
 cur = con.cursor()
@@ -109,6 +111,15 @@ class Orders:
         order = cls.table.get('*', 'moviemaker_channel_id = ? OR customer_channel_id = ?', (channel_id, channel_id))
         return cls.table.from_iterable(order)
 
+    @classmethod
+    def get_all_inactive(cls) -> List[Tuple[int, int]]:
+        date_time = datetime.now() - timedelta(hours=12)
+        return cls.table.get_all('id, customer_channel_id', 'created < ? AND moviemaker_channel_id IS NULL', [date_time.isoformat()])
+
+    @classmethod
+    async def delete(cls, id: int):
+        await cls.table.delete('id = ?', [id])
+
 
 class Config:
     table = Table('config', models.Config)
@@ -123,60 +134,6 @@ class Config:
         last_order_id = cls.table.get_no_condition('last_order_id')[0]
         await cls.table.update('last_order_id = ?', '0 = 0', [last_order_id + 1])
         return last_order_id + 1
-
-
-class Games:
-    table = Table('games', models.Games)
-    
-    @classmethod
-    async def add(cls, name: str) -> models.Games:
-        await cls.table.add('(name)', '(?)', [name])
-        id =  cls.get_id(name)
-        return models.Games(id, name, None)
-
-    @classmethod
-    def get_games(cls) -> List[str]:
-        games = [i[0] for i in cls.table.get_all_no_condition('name')]
-        return games
-
-    @classmethod
-    def get(cls, id: int) -> models.Games:
-        game = cls.table.get('*', 'id = ?', [id])
-        return cls.table.from_iterable(game)
-
-    @classmethod
-    def get_all(cls) -> List[models.Games]:
-        games = cls.table.get_all_no_condition('*')
-        return [cls.table.from_iterable(game) for game in games]
-
-    @classmethod
-    def get_id(cls, name: str) -> int:
-        return cls.table.get('id', 'name = ?', [name])[0]
-
-    @classmethod
-    def get_name(cls, id: int) -> str:
-        return cls.table.get('name', 'id = ?', [id])[0]
-
-    @classmethod
-    def get_game_by_channel_id(cls, customer_channel_id: int) -> str:
-        game_id = Orders.get_game_id_by_customer_channel_id(customer_channel_id)
-        return cls.table.get('name', 'id = ?', [game_id])[0]
-
-    @classmethod
-    async def delete(cls, game_id):
-        await cls.table.delete('id = ?', [game_id])
-
-    @classmethod
-    async def update_name(cls, game_id: int, new_name: str):
-        await cls.table.update('name = ?', 'id = ?', (new_name, game_id))
-
-    @classmethod
-    async def update_message(cls, game_id: int, new_message: str):
-        await cls.table.update('message = ?', 'id = ?', (new_message, game_id))
-
-    @classmethod
-    def get_message(cls, game_id: int) -> str:
-        return cls.table.get('message', 'id = ?', [game_id])[0]
 
 
 class Categories:
