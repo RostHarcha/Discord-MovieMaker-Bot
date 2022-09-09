@@ -64,10 +64,12 @@ new_message_text = lambda: 'Введите новый текст:'
 
 choose_category = lambda: 'Выберите категорию:'
 
-enter_ohter = lambda category: f'Введите название для ({category})'
+enter_ohter = lambda category: f'Уточните, что бы вы хотели заказать?' # ({category})'
 
 order_created = lambda subcategory: f'Создан заказ на {subcategory}'
 
 order_sent = lambda category, subcategory: f'Заявка на {category} > {subcategory} отправлена. Ожидайте, мы рассмотрим заявку, через некоторое время в этом диалоге с вами свяжется исполнитель заказа.'
 
 subcategories = lambda: 'Подкатегории'
+
+cancel_order = lambda: 'Отменить заказ'

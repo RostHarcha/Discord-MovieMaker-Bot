@@ -6,6 +6,8 @@ import models
 import database
 import messages
 
+from datetime import datetime
+
 #import vk.dav
 
 config = database.Config.get()
@@ -24,7 +26,8 @@ async def log(order_id, author, msg):
 
 def bot_log(msg):
     with open('log.txt', 'a') as file:
-        file.write(f'{msg}\n')
+        datetime_ = str(datetime.now())
+        file.write(f'[{datetime_}]\t{msg}\n')
 
 @bot.event
 async def on_ready():
@@ -154,6 +157,11 @@ class ChooseCategory(discord.ui.View):
         super().__init__(timeout=None)
         for category in database.Categories.get_all():
             self.add_item(CategoryButton(category, order_id))
+
+        @discord.ui.button(label=messages.cancel_order(), style=discord.ButtonStyle.red)
+        async def cancel_order(self, callback: discord.interactions.Interaction, button: discord.ui.Button):
+            await callback.channel.delete()
+            await database.Users.update_context(callback.user.id, '0')
 
 
 
